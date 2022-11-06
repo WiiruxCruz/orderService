@@ -1,7 +1,11 @@
 package com.wiirux.orderService.domain;
 
+import java.sql.Timestamp;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,16 +17,30 @@ public abstract class BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@CreationTimestamp
+	@Column(updatable = false)
+	private Timestamp createdDate;
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(createdDate, id);
+	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		/*
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -30,21 +48,6 @@ public abstract class BaseEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		BaseEntity other = (BaseEntity) obj;
-		return Objects.equals(id, other.id);
-		*/
-		
-		if (this == obj) return true;
-		if (!(obj instanceof BaseEntity)) return false;
-		
-		BaseEntity that = (BaseEntity) obj;
-		
-		return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
+		return Objects.equals(createdDate, other.createdDate) && Objects.equals(id, other.id);
 	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-	
-	
 }
