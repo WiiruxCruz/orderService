@@ -58,5 +58,6 @@ public class OrderHeaderTest {
 		assertNotNull(fetchedOrder);
 		assertNotNull(fetchedOrder.getId());
 		assertNotNull(fetchedOrder.getCreatedDate());
+		assertNotNull(fetchedOrder.getLastModifiedDate());
 	}
 }
