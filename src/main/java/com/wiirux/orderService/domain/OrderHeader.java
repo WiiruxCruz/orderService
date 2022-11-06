@@ -7,6 +7,8 @@ import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -57,6 +59,9 @@ public class OrderHeader extends BaseEntity{
 	@Embedded
 	private Address billToAddress;
 	
+	@Enumerated(EnumType.STRING)
+	private OrderStatus orderStatus;
+	
 	public String getCustomer() {
 		return customer;
 	}
@@ -75,15 +80,19 @@ public class OrderHeader extends BaseEntity{
 	public void setBillToAddress(Address billToAddress) {
 		this.billToAddress = billToAddress;
 	}
-	
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(billToAddress, customer, shippingAddress);
+		result = prime * result + Objects.hash(billToAddress, customer, orderStatus, shippingAddress);
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -94,6 +103,7 @@ public class OrderHeader extends BaseEntity{
 			return false;
 		OrderHeader other = (OrderHeader) obj;
 		return Objects.equals(billToAddress, other.billToAddress) && Objects.equals(customer, other.customer)
-				&& Objects.equals(shippingAddress, other.shippingAddress);
-	}	
+				&& orderStatus == other.orderStatus && Objects.equals(shippingAddress, other.shippingAddress);
+	}
+		
 }
