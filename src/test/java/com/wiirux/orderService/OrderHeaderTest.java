@@ -1,8 +1,11 @@
 package com.wiirux.orderService;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.wiirux.orderService.domain.OrderHeader;
+import com.wiirux.orderService.domain.OrderLine;
 import com.wiirux.orderService.repositories.OrderHeaderRepository;
 
 @ActiveProfiles("local")
@@ -42,6 +46,24 @@ public class OrderHeaderTest {
 		oh2.setId(3L);
 		
 		assertFalse( oh1.equals(oh2) );
+	}
+	
+	@Test
+	void testSaveOrderWithLine() {
+		OrderHeader oh = new OrderHeader();
+		oh.setCustomer("New Customer");
+		OrderHeader saveOrder = ohr.save(oh);
+		
+		OrderLine ol = new OrderLine();
+		ol.setQuantityOrdered(5);
+		
+		oh.setOrderLines(Set.of(ol));
+		ol.setOrderHeader(oh);
+		
+		assertNotNull(saveOrder);
+		assertNotNull(saveOrder.getId());
+		assertNotNull(saveOrder.getOrderLines());
+		assertEquals(saveOrder.getOrderLines().size(), 1);
 	}
 	
 	@Test

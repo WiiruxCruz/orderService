@@ -1,6 +1,7 @@
 package com.wiirux.orderService.domain;
 
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -12,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -62,6 +64,9 @@ public class OrderHeader extends BaseEntity{
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;
 	
+	@OneToMany(mappedBy = "orderHeader")
+	private Set<OrderLine> orderLines;
+	
 	public String getCustomer() {
 		return customer;
 	}
@@ -86,11 +91,17 @@ public class OrderHeader extends BaseEntity{
 	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
+	public Set<OrderLine> getOrderLines() {
+		return orderLines;
+	}
+	public void setOrderLines(Set<OrderLine> orderLines) {
+		this.orderLines = orderLines;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(billToAddress, customer, orderStatus, shippingAddress);
+		result = prime * result + Objects.hash(billToAddress, customer, orderLines, orderStatus, shippingAddress);
 		return result;
 	}
 	@Override
@@ -103,7 +114,7 @@ public class OrderHeader extends BaseEntity{
 			return false;
 		OrderHeader other = (OrderHeader) obj;
 		return Objects.equals(billToAddress, other.billToAddress) && Objects.equals(customer, other.customer)
-				&& orderStatus == other.orderStatus && Objects.equals(shippingAddress, other.shippingAddress);
-	}
-		
+				&& Objects.equals(orderLines, other.orderLines) && orderStatus == other.orderStatus
+				&& Objects.equals(shippingAddress, other.shippingAddress);
+	}	
 }
