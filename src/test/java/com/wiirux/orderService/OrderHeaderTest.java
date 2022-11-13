@@ -52,7 +52,6 @@ public class OrderHeaderTest {
 	void testSaveOrderWithLine() {
 		OrderHeader oh = new OrderHeader();
 		oh.setCustomer("New Customer");
-		OrderHeader saveOrder = ohr.save(oh);
 		
 		OrderLine ol = new OrderLine();
 		ol.setQuantityOrdered(5);
@@ -60,10 +59,19 @@ public class OrderHeaderTest {
 		oh.setOrderLines(Set.of(ol));
 		ol.setOrderHeader(oh);
 		
+		OrderHeader saveOrder = ohr.save(oh);
+		
+		ohr.flush();
+		
 		assertNotNull(saveOrder);
 		assertNotNull(saveOrder.getId());
 		assertNotNull(saveOrder.getOrderLines());
 		assertEquals(saveOrder.getOrderLines().size(), 1);
+		
+		OrderHeader fetchedOrder = ohr.getById(saveOrder.getId());
+		
+		assertNotNull(fetchedOrder);
+		assertEquals(fetchedOrder.getOrderLines().size(), 1);
 	}
 	
 	@Test

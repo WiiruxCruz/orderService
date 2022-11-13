@@ -29,7 +29,8 @@ public class OrderLine extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(orderHeader, quantityOrdered);
+		//result = prime * result + ((orderHeader == null) ? 0 : orderHeader.hashCode());
+		result = prime * result + ((quantityOrdered == null) ? 0 : quantityOrdered.hashCode());
 		return result;
 	}
 	@Override
@@ -41,8 +42,20 @@ public class OrderLine extends BaseEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		OrderLine other = (OrderLine) obj;
-		return Objects.equals(orderHeader, other.orderHeader) && Objects.equals(quantityOrdered, other.quantityOrdered);
+		if (orderHeader == null) {
+			if (other.orderHeader != null)
+				return false;
+		} else if (!orderHeader.equals(other.orderHeader))
+			return false;
+		if (quantityOrdered == null) {
+			if (other.quantityOrdered != null)
+				return false;
+		} else if (!quantityOrdered.equals(other.quantityOrdered))
+			return false;
+		return true;
 	}
+	
+
 	
 	
 }
