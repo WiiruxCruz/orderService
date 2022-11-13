@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,7 +17,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.wiirux.orderService.domain.OrderHeader;
 import com.wiirux.orderService.domain.OrderLine;
+import com.wiirux.orderService.domain.Product;
+import com.wiirux.orderService.domain.ProductStatus;
 import com.wiirux.orderService.repositories.OrderHeaderRepository;
+import com.wiirux.orderService.repositories.ProductRepository;
 
 @ActiveProfiles("local")
 @DataJpaTest
@@ -25,6 +29,19 @@ import com.wiirux.orderService.repositories.OrderHeaderRepository;
 public class OrderHeaderTest {
 	@Autowired
 	OrderHeaderRepository ohr;
+	
+	@Autowired
+	ProductRepository pr;
+	
+	Product product;
+	
+	@BeforeEach
+	void setup() {
+		Product newProduct = new Product();
+		newProduct.setProductStatus(ProductStatus.NEW);
+		newProduct.setDescription("test product");
+		product = pr.saveAndFlush(newProduct);
+	}
 	
 	@Test
 	void testEquals() {
