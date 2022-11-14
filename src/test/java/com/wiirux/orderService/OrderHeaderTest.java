@@ -72,9 +72,11 @@ public class OrderHeaderTest {
 		
 		OrderLine ol = new OrderLine();
 		ol.setQuantityOrdered(5);
+		ol.setProduct(product);
 		
-		oh.setOrderLines(Set.of(ol));
-		ol.setOrderHeader(oh);
+		//oh.setOrderLines(Set.of(ol));
+		//ol.setOrderHeader(oh);
+		oh.addOrderLine(ol);
 		
 		OrderHeader saveOrder = ohr.save(oh);
 		
