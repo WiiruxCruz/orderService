@@ -1,29 +1,23 @@
 package com.wiirux.orderService.domain;
 
-import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
-public class Product extends BaseEntity {
+public class Category extends BaseEntity{
 	private String description;
-	
-	@Enumerated(EnumType.STRING)
-	private ProductStatus productStatus;
 	
 	@ManyToMany
 	@JoinTable(
 		name = "product_category",
-		joinColumns = @JoinColumn(name = "product_id"),
-		inverseJoinColumns = @JoinColumn(name = "category_id")
+		joinColumns = @JoinColumn(name = "category_id"),
+		inverseJoinColumns = @JoinColumn(name = "product_id")
 	)
-	private Set<Category> categories;
+	private Set<Product> products;
 
 	public String getDescription() {
 		return description;
@@ -33,20 +27,12 @@ public class Product extends BaseEntity {
 		this.description = description;
 	}
 
-	public ProductStatus getProductStatus() {
-		return productStatus;
+	public Set<Product> getProducts() {
+		return products;
 	}
 
-	public void setProductStatus(ProductStatus productStatus) {
-		this.productStatus = productStatus;
-	}
-
-	public Set<Category> getCategories() {
-		return categories;
-	}
-
-	public void setCategories(Set<Category> categories) {
-		this.categories = categories;
+	public void setProducts(Set<Product> products) {
+		this.products = products;
 	}
 
 	@Override
@@ -54,7 +40,6 @@ public class Product extends BaseEntity {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((productStatus == null) ? 0 : productStatus.hashCode());
 		return result;
 	}
 
@@ -66,16 +51,16 @@ public class Product extends BaseEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Product other = (Product) obj;
+		Category other = (Category) obj;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (productStatus != other.productStatus)
-			return false;
 		return true;
 	}
 
+	
+	
 	
 }
