@@ -112,13 +112,19 @@ public class OrderHeader extends BaseEntity{
 	public void setOrderLines(Set<OrderLine> orderLines) {
 		this.orderLines = orderLines;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(billToAddress, customer, orderLines, orderStatus, shippingAddress);
+		result = prime * result + ((billToAddress == null) ? 0 : billToAddress.hashCode());
+		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
+		result = prime * result + ((orderLines == null) ? 0 : orderLines.hashCode());
+		result = prime * result + ((orderStatus == null) ? 0 : orderStatus.hashCode());
+		result = prime * result + ((shippingAddress == null) ? 0 : shippingAddress.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -128,8 +134,29 @@ public class OrderHeader extends BaseEntity{
 		if (getClass() != obj.getClass())
 			return false;
 		OrderHeader other = (OrderHeader) obj;
-		return Objects.equals(billToAddress, other.billToAddress) && Objects.equals(customer, other.customer)
-				&& Objects.equals(orderLines, other.orderLines) && orderStatus == other.orderStatus
-				&& Objects.equals(shippingAddress, other.shippingAddress);
-	}	
+		if (billToAddress == null) {
+			if (other.billToAddress != null)
+				return false;
+		} else if (!billToAddress.equals(other.billToAddress))
+			return false;
+		if (customer == null) {
+			if (other.customer != null)
+				return false;
+		} else if (!customer.equals(other.customer))
+			return false;
+		if (orderLines == null) {
+			if (other.orderLines != null)
+				return false;
+		} else if (!orderLines.equals(other.orderLines))
+			return false;
+		if (orderStatus != other.orderStatus)
+			return false;
+		if (shippingAddress == null) {
+			if (other.shippingAddress != null)
+				return false;
+		} else if (!shippingAddress.equals(other.shippingAddress))
+			return false;
+		return true;
+	}
+	
 }

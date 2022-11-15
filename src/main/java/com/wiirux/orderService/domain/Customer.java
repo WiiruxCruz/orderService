@@ -30,15 +30,6 @@ public class Customer extends BaseEntity {
 	@OneToMany(mappedBy = "customer")
 	private Set<OrderHeader> orderHeaders;
 	
-	public void addOrderHeader(OrderHeader orderHeader) {
-		if (orderHeaders == null) {
-			orderHeaders = new HashSet<>();
-		}
-		
-		orderHeaders.add(orderHeader);
-		orderHeader.setCustomer(this);
-	}
-	
 	public String getName() {
 		return name;
 	}
@@ -63,47 +54,10 @@ public class Customer extends BaseEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((customerAddress == null) ? 0 : customerAddress.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
-		return result;
+	public Set<OrderHeader> getOrderHeaders() {
+		return orderHeaders;
 	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Customer other = (Customer) obj;
-		if (customerAddress == null) {
-			if (other.customerAddress != null)
-				return false;
-		} else if (!customerAddress.equals(other.customerAddress))
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (phone == null) {
-			if (other.phone != null)
-				return false;
-		} else if (!phone.equals(other.phone))
-			return false;
-		return true;
+	public void setOrderHeaders(Set<OrderHeader> orderHeaders) {
+		this.orderHeaders = orderHeaders;
 	}
-	
-	
 }
