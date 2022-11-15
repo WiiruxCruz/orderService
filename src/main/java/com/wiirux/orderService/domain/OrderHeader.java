@@ -16,6 +16,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -56,7 +57,8 @@ import jakarta.persistence.Table;
 })
 public class OrderHeader extends BaseEntity{
 	
-	private String customer;
+	@ManyToOne
+	private Customer customer;
 	
 	@Embedded
 	private Address shippingAddress;
@@ -80,10 +82,10 @@ public class OrderHeader extends BaseEntity{
 		
 	}
 	
-	public String getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
-	public void setCustomer(String customer) {
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 	public Address getShippingAddress() {

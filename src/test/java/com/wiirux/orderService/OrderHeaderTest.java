@@ -15,10 +15,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.wiirux.orderService.domain.Address;
+import com.wiirux.orderService.domain.Customer;
 import com.wiirux.orderService.domain.OrderHeader;
 import com.wiirux.orderService.domain.OrderLine;
 import com.wiirux.orderService.domain.Product;
 import com.wiirux.orderService.domain.ProductStatus;
+import com.wiirux.orderService.repositories.CustomerRepository;
 import com.wiirux.orderService.repositories.OrderHeaderRepository;
 import com.wiirux.orderService.repositories.ProductRepository;
 
@@ -33,7 +36,11 @@ public class OrderHeaderTest {
 	@Autowired
 	ProductRepository pr;
 	
+	@Autowired
+	CustomerRepository cr;
+	
 	Product product;
+	//Customer customer;
 	
 	@BeforeEach
 	void setup() {
@@ -41,6 +48,24 @@ public class OrderHeaderTest {
 		newProduct.setProductStatus(ProductStatus.NEW);
 		newProduct.setDescription("test product");
 		product = pr.saveAndFlush(newProduct);
+		
+		/*
+		Address customer_address = new Address();
+		customer_address.setAddress("Veracruz address");
+		customer_address.setCity("Veracruz");
+		customer_address.setState("Veracruz");
+		customer_address.setZipCode("12345");
+		
+		Customer newCustomer = new Customer();
+		newCustomer.setName("Hiram Ramirez");
+		newCustomer.setEmail("correo@ejemplo.com");
+		newCustomer.setPhone("1234567890");
+		newCustomer.setCustomerAddress(customer_address);
+		
+		customer = cr.saveAndFlush(newCustomer); 
+		
+		cr.flush();
+		*/
 	}
 	
 	@Test
@@ -67,8 +92,13 @@ public class OrderHeaderTest {
 	
 	@Test
 	void testSaveOrderWithLine() {
+		
 		OrderHeader oh = new OrderHeader();
-		oh.setCustomer("New Customer");
+		
+		Customer customer = new Customer();
+		customer.setName("New Customer");
+		Customer savedCustomer = cr.save(customer);
+		oh.setCustomer(savedCustomer);
 		
 		OrderLine ol = new OrderLine();
 		ol.setQuantityOrdered(5);
@@ -95,8 +125,13 @@ public class OrderHeaderTest {
 	
 	@Test
 	void testSaveOrder() {
+		
 		OrderHeader oh = new OrderHeader();
-		oh.setCustomer("New Customer");
+		Customer customer = new Customer();
+		customer.setName("New Customer");
+		Customer savedCustomer = cr.save(customer);
+		
+		oh.setCustomer(savedCustomer);
 		OrderHeader saveOrder = ohr.save(oh);
 		
 		assertNotNull(saveOrder);
