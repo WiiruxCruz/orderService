@@ -18,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -72,6 +73,9 @@ public class OrderHeader extends BaseEntity{
 	@OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
 	private Set<OrderLine> orderLines;
 	
+	@OneToOne
+	private OrderApproval orderApproval;
+	
 	public void addOrderLine(OrderLine orderLine) {
 		if (orderLines == null) {
 			orderLines = new HashSet<>();
@@ -111,6 +115,12 @@ public class OrderHeader extends BaseEntity{
 	}
 	public void setOrderLines(Set<OrderLine> orderLines) {
 		this.orderLines = orderLines;
+	}
+	public OrderApproval getOrderApproval() {
+		return orderApproval;
+	}
+	public void setOrderApproval(OrderApproval orderApproval) {
+		this.orderApproval = orderApproval;
 	}
 
 	@Override

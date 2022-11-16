@@ -17,11 +17,13 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.wiirux.orderService.domain.Address;
 import com.wiirux.orderService.domain.Customer;
+import com.wiirux.orderService.domain.OrderApproval;
 import com.wiirux.orderService.domain.OrderHeader;
 import com.wiirux.orderService.domain.OrderLine;
 import com.wiirux.orderService.domain.Product;
 import com.wiirux.orderService.domain.ProductStatus;
 import com.wiirux.orderService.repositories.CustomerRepository;
+import com.wiirux.orderService.repositories.OrderApprovalRepository;
 import com.wiirux.orderService.repositories.OrderHeaderRepository;
 import com.wiirux.orderService.repositories.ProductRepository;
 
@@ -38,6 +40,9 @@ public class OrderHeaderTest {
 	
 	@Autowired
 	CustomerRepository cr;
+	
+	@Autowired
+	OrderApprovalRepository oar;
 	
 	Product product;
 	//Customer customer;
@@ -107,6 +112,11 @@ public class OrderHeaderTest {
 		//oh.setOrderLines(Set.of(ol));
 		//ol.setOrderHeader(oh);
 		oh.addOrderLine(ol);
+		
+		OrderApproval approval = new OrderApproval();
+		approval.setApprovedBy("me");
+		OrderApproval savedApproval = oar.save(approval);
+		oh.setOrderApproval(savedApproval);
 		
 		OrderHeader saveOrder = ohr.save(oh);
 		
