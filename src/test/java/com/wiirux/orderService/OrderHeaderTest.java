@@ -160,7 +160,7 @@ public class OrderHeaderTest {
 		OrderHeader orderHeader = new OrderHeader();
         Customer customer = new Customer();
         customer.setName("new Customer");
-        orderHeader.setCustomer(cr.saveAndFlush(customer));
+        orderHeader.setCustomer(cr.save(customer));
 
         OrderLine orderLine = new OrderLine();
         orderLine.setQuantityOrdered(3);
@@ -172,6 +172,7 @@ public class OrderHeaderTest {
 
         orderHeader.addOrderLine(orderLine);
         OrderHeader savedOrder = ohr.saveAndFlush(orderHeader);
+        
 
         System.out.println("order saved and flushed");
 
