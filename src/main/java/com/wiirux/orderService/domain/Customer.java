@@ -1,6 +1,7 @@
 package com.wiirux.orderService.domain;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import jakarta.persistence.AttributeOverride;
@@ -28,7 +29,7 @@ public class Customer extends BaseEntity {
 	private String email;
 	
 	@OneToMany(mappedBy = "customer")
-	private Set<OrderHeader> orderHeaders;
+	private Set<OrderHeader> orderHeaders = new LinkedHashSet<>();
 	
 	public String getName() {
 		return name;

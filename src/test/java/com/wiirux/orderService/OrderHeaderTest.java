@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Set;
 
@@ -27,9 +29,10 @@ import com.wiirux.orderService.repositories.OrderApprovalRepository;
 import com.wiirux.orderService.repositories.OrderHeaderRepository;
 import com.wiirux.orderService.repositories.ProductRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @ActiveProfiles("local")
 @DataJpaTest
-@ComponentScan(basePackages = {"com.wiirux.orderservice.dao"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class OrderHeaderTest {
 	@Autowired
@@ -151,5 +154,34 @@ public class OrderHeaderTest {
 		assertNotNull(fetchedOrder.getId());
 		assertNotNull(fetchedOrder.getCreatedDate());
 		assertNotNull(fetchedOrder.getLastModifiedDate());
+	}
+	
+	@Test
+	void testDeleteCascade() {
+		OrderHeader orderHeader = new OrderHeader();
+        Customer customer = new Customer();
+        customer.setName("new Customer");
+        orderHeader.setCustomer(cr.saveAndFlush(customer));
+
+        OrderLine orderLine = new OrderLine();
+        orderLine.setQuantityOrdered(3);
+        orderLine.setProduct(product);
+
+        orderHeader.addOrderLine(orderLine);
+        //OrderHeader savedOrder = ohr.saveAndFlush(orderHeader);
+        OrderHeader savedOrder = ohr.saveAndFlush(orderHeader);
+
+        System.out.println("order saved and flushed");
+
+        ohr.deleteById(savedOrder.getId());
+        System.out.println("ID del que borré:" + savedOrder.getId());
+        ohr.flush();
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            OrderHeader fetchedOrder = ohr.getOne(savedOrder.getId());
+            System.out.println("ID que encontré:" + fetchedOrder.getId());
+
+            assertNull(fetchedOrder);
+        });
 	}
 }
