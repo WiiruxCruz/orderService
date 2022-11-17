@@ -160,19 +160,21 @@ public class OrderHeaderTest {
 		OrderHeader orderHeader = new OrderHeader();
         Customer customer = new Customer();
         customer.setName("new Customer");
-        orderHeader.setCustomer(cr.save(customer));
+        Customer savedCustomer = cr.save(customer);
+        orderHeader.setCustomer(savedCustomer);
+        cr.flush();
 
         OrderLine orderLine = new OrderLine();
         orderLine.setQuantityOrdered(3);
         orderLine.setProduct(product);
+        orderHeader.addOrderLine(orderLine);
         
         OrderApproval orderApproval = new OrderApproval();
         orderApproval.setApprovedBy("me");
         orderHeader.setOrderApproval(orderApproval);
 
-        orderHeader.addOrderLine(orderLine);
-        OrderHeader savedOrder = ohr.saveAndFlush(orderHeader);
-        
+        OrderHeader savedOrder = ohr.save(orderHeader);
+        ohr.flush();
 
         System.out.println("order saved and flushed");
 
