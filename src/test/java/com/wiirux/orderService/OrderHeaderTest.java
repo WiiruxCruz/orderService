@@ -1,23 +1,20 @@
 package com.wiirux.orderService;
 
-import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.wiirux.orderService.domain.Address;
 import com.wiirux.orderService.domain.Customer;
 import com.wiirux.orderService.domain.OrderApproval;
 import com.wiirux.orderService.domain.OrderHeader;
@@ -25,11 +22,12 @@ import com.wiirux.orderService.domain.OrderLine;
 import com.wiirux.orderService.domain.Product;
 import com.wiirux.orderService.domain.ProductStatus;
 import com.wiirux.orderService.repositories.CustomerRepository;
-import com.wiirux.orderService.repositories.OrderApprovalRepository;
 import com.wiirux.orderService.repositories.OrderHeaderRepository;
 import com.wiirux.orderService.repositories.ProductRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+
+
 
 @ActiveProfiles("local")
 @DataJpaTest
@@ -156,6 +154,7 @@ public class OrderHeaderTest {
 		assertNotNull(fetchedOrder.getLastModifiedDate());
 	}
 	
+	//el error en la prueba esta dado porque no se elimina el registro en la bd	
 	@Test
 	void testDeleteCascade() {
 		OrderHeader orderHeader = new OrderHeader();
@@ -166,19 +165,23 @@ public class OrderHeaderTest {
         OrderLine orderLine = new OrderLine();
         orderLine.setQuantityOrdered(3);
         orderLine.setProduct(product);
+        
+        OrderApproval orderApproval = new OrderApproval();
+        orderApproval.setApprovedBy("me");
+        orderHeader.setOrderApproval(orderApproval);
 
         orderHeader.addOrderLine(orderLine);
-        //OrderHeader savedOrder = ohr.saveAndFlush(orderHeader);
         OrderHeader savedOrder = ohr.saveAndFlush(orderHeader);
 
         System.out.println("order saved and flushed");
 
         ohr.deleteById(savedOrder.getId());
-        System.out.println("ID del que borré:" + savedOrder.getId());
         ohr.flush();
+        System.out.println("ID del que borré:" + savedOrder.getId());
+        
 
         assertThrows(EntityNotFoundException.class, () -> {
-            OrderHeader fetchedOrder = ohr.getOne(savedOrder.getId());
+            OrderHeader fetchedOrder = ohr.getReferenceById(savedOrder.getId());
             System.out.println("ID que encontré:" + fetchedOrder.getId());
 
             assertNull(fetchedOrder);
