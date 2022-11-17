@@ -41,8 +41,6 @@ public class OrderHeaderTest {
 	@Autowired
 	CustomerRepository cr;
 	
-	@Autowired
-	OrderApprovalRepository oar;
 	
 	Product product;
 	//Customer customer;
@@ -115,8 +113,8 @@ public class OrderHeaderTest {
 		
 		OrderApproval approval = new OrderApproval();
 		approval.setApprovedBy("me");
-		OrderApproval savedApproval = oar.save(approval);
-		oh.setOrderApproval(savedApproval);
+		//OrderApproval savedApproval = oar.save(approval);
+		oh.setOrderApproval(approval);
 		
 		OrderHeader saveOrder = ohr.save(oh);
 		
