@@ -1,8 +1,10 @@
 package com.wiirux.orderService;
 
 import java.util.ArrayList;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -42,6 +44,16 @@ public class DataLoadTest {
     ProductRepository productRepository;
     
     @Test
+    void testN_PlusOneProblem() {
+    	Customer customer = customerRepository.findCustomerByNameIgnoreCase(TEST_CUSTOMER).get();
+    	IntSummaryStatistics totalOrdered = orderHeaderRepository.findAllByCustomer(customer).stream()
+    			.flatMap(orderHeaderRepository -> orderHeaderRepository.getOrderLines().stream())
+    			.collect(Collectors.summarizingInt(ol -> ol.getQuantityOrdered()));
+    	
+    	System.out.println("total ordered: " + totalOrdered.getSum());
+    }
+    
+    @Test
     void testLazyVsEager() {
     	OrderHeader oh = orderHeaderRepository.getById(5L);
     	System.out.println("Order Id is: " + oh.getId());
@@ -55,7 +67,7 @@ public class DataLoadTest {
         List<Product> products = loadProducts();
         Customer customer = loadCustomers();
 
-        int ordersToCreate = 100;
+        int ordersToCreate = 30000;
 
         for (int i = 0; i < ordersToCreate; i++){
             System.out.println("Creating order #: " + i);
