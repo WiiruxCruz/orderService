@@ -44,6 +44,23 @@ public class DataLoadTest {
     ProductRepository productRepository;
     
     @Test
+    void testDBLock() {
+    	Long id = 1L;
+    	
+    	OrderHeader oh = orderHeaderRepository.findById(id).get();
+    	
+    	Address billTo = new Address();
+    	billTo.setAddress("Bill me");
+    	
+    	oh.setBillToAddress(billTo);
+    	
+    	orderHeaderRepository.saveAndFlush(oh);
+    	
+    	System.out.println("I updated the order");
+    }
+    
+    @Disabled
+    @Test
     void testN_PlusOneProblem() {
     	Customer customer = customerRepository.findCustomerByNameIgnoreCase(TEST_CUSTOMER).get();
     	IntSummaryStatistics totalOrdered = orderHeaderRepository.findAllByCustomer(customer).stream()
@@ -53,6 +70,7 @@ public class DataLoadTest {
     	System.out.println("total ordered: " + totalOrdered.getSum());
     }
     
+    @Disabled
     @Test
     void testLazyVsEager() {
     	OrderHeader oh = orderHeaderRepository.getById(5L);
