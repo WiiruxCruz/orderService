@@ -1,30 +1,21 @@
 package com.wiirux.orderService.bootstrap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wiirux.orderService.domain.OrderHeader;
 import com.wiirux.orderService.repositories.OrderHeaderRepository;
 
-@Component
-public class Bootstrap implements CommandLineRunner {
-	
+@Service
+public class BootstrapOrderService {
 	@Autowired
 	OrderHeaderRepository ohr;
 	
-	@Autowired
-	BootstrapOrderService bos;
-	
-	//@Transactional
-	@Override
-	public void run(String... args) throws Exception {
-		/*
-		//si se omite la anotación de transacción spring genera una transaccion implicita solo para el repository
+	@Transactional
+	public void readOrderData() {
 		OrderHeader oh = ohr.findById(3L).get();
 		
-		//si se omite la anotación de transacción, el sig codigo esta fuera del scope de transaccion y mandara error
 		oh.getOrderLines().forEach( ol -> {
 			System.out.println(ol.getProduct().getDescription());
 			
@@ -32,7 +23,5 @@ public class Bootstrap implements CommandLineRunner {
 				System.out.println(cat.getDescription());
 			});
 		});
-		*/
-		bos.readOrderData();
 	}
 }
