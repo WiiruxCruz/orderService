@@ -44,8 +44,15 @@ public class Bootstrap implements CommandLineRunner {
 		customer.setName("Testing version");
 		Customer savedCustomer = cr.save(customer);
 		
-		System.out.println("Version is: " + savedCustomer.getVersion());
+		savedCustomer.setName("Testing version 2");
+		Customer savedCustomer2 = cr.save(savedCustomer);
+		System.out.println("Version is: " + savedCustomer2.getVersion());
 		
-		cr.deleteById(savedCustomer.getId());
+		savedCustomer2.setName("Testing version 3");
+		Customer savedCustomer3 = cr.save(savedCustomer2);
+		System.out.println("Version is: " + savedCustomer3.getVersion());
+		
+		//cr.deleteById(savedCustomer.getId());
+		cr.delete(savedCustomer3);
 	}
 }

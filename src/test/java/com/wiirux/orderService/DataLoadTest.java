@@ -43,7 +43,7 @@ public class DataLoadTest {
     @Autowired
     ProductRepository productRepository;
     
-    @Disabled
+    
     @Test
     void testDBLock() {
     	Long id = 1L;
@@ -79,7 +79,7 @@ public class DataLoadTest {
     	System.out.println("Customer Name is: " + oh.getCustomer().getName());
     }
 
-    
+    @Disabled
     @Rollback(value = false)
     @Test
     void testDataLoader() {

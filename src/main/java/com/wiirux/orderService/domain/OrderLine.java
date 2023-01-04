@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Version;
 
 @Entity
 public class OrderLine extends BaseEntity {
@@ -14,6 +15,9 @@ public class OrderLine extends BaseEntity {
 	
 	@ManyToOne
 	private Product product;
+	
+	@Version
+	private Integer version;
 	
 	public Integer getQuantityOrdered() {
 		return quantityOrdered;
@@ -33,6 +37,13 @@ public class OrderLine extends BaseEntity {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	public Integer getVersion() {
+		return version;
+	}
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -67,11 +78,5 @@ public class OrderLine extends BaseEntity {
 		} else if (!quantityOrdered.equals(other.quantityOrdered))
 			return false;
 		return true;
-	}
-	
-	
-	
-
-	
-	
+	}	
 }

@@ -24,6 +24,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 @Entity
 @AttributeOverrides({
@@ -84,6 +85,9 @@ public class OrderHeader extends BaseEntity{
 	@Fetch(FetchMode.SELECT)
 	private OrderApproval orderApproval;
 	
+	@Version
+	private Integer version;
+	
 	public void addOrderLine(OrderLine orderLine) {
 		if (orderLines == null) {
 			orderLines = new HashSet<>();
@@ -130,6 +134,13 @@ public class OrderHeader extends BaseEntity{
 	public void setOrderApproval(OrderApproval orderApproval) {
 		this.orderApproval = orderApproval;
 		orderApproval.setOrderHeader(this);
+	}
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 	@Override
