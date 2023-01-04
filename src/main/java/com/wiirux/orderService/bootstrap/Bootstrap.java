@@ -5,7 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.wiirux.orderService.domain.Customer;
 import com.wiirux.orderService.domain.OrderHeader;
+import com.wiirux.orderService.repositories.CustomerRepository;
 import com.wiirux.orderService.repositories.OrderHeaderRepository;
 
 @Component
@@ -16,6 +18,9 @@ public class Bootstrap implements CommandLineRunner {
 	
 	@Autowired
 	BootstrapOrderService bos;
+	
+	@Autowired
+	CustomerRepository cr;
 	
 	//@Transactional
 	@Override
@@ -34,5 +39,13 @@ public class Bootstrap implements CommandLineRunner {
 		});
 		*/
 		bos.readOrderData();
+		
+		Customer customer = new Customer();
+		customer.setName("Testing version");
+		Customer savedCustomer = cr.save(customer);
+		
+		System.out.println("Version is: " + savedCustomer.getVersion());
+		
+		cr.deleteById(savedCustomer.getId());
 	}
 }

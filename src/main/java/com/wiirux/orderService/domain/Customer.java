@@ -11,6 +11,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 
 @Entity
 @AttributeOverrides({
@@ -27,6 +28,9 @@ public class Customer extends BaseEntity {
 	
 	private String phone;
 	private String email;
+	
+	@Version
+	private Integer version;
 	
 	@OneToMany(mappedBy = "customer")
 	private Set<OrderHeader> orderHeaders = new LinkedHashSet<>();
@@ -60,5 +64,11 @@ public class Customer extends BaseEntity {
 	}
 	public void setOrderHeaders(Set<OrderHeader> orderHeaders) {
 		this.orderHeaders = orderHeaders;
+	}
+	public Integer getVersion() {
+		return version;
+	}
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }
