@@ -1,16 +1,28 @@
 package com.wiirux.orderService.domain;
 
-import java.util.Objects;
 import java.util.Set;
 
+import org.hibernate.annotations.DialectOverride.ColumnDefault;
+
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@AttributeOverrides({
+	@AttributeOverride(
+		name = "quantityOnHand",
+		column = @Column(name = "quantity_on_hand")
+	)
+})
+//@Table(name = "Product")
 public class Product extends BaseEntity {
 	private String description;
 	
@@ -24,6 +36,9 @@ public class Product extends BaseEntity {
 		inverseJoinColumns = @JoinColumn(name = "category_id")
 	)
 	private Set<Category> categories;
+	
+	//@Column(name = "quantityOnHand")
+	private Integer quantityOnHand = 0;
 
 	public String getDescription() {
 		return description;
@@ -47,6 +62,14 @@ public class Product extends BaseEntity {
 
 	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
+	}
+
+	public Integer getQuantityOnHand() {
+		return quantityOnHand;
+	}
+
+	public void setQuantityOnHand(Integer quantityOnHand) {
+		this.quantityOnHand = quantityOnHand;
 	}
 
 	@Override
