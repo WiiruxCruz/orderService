@@ -14,15 +14,19 @@ import org.springframework.test.context.ActiveProfiles;
 import com.wiirux.orderService.domain.Product;
 import com.wiirux.orderService.domain.ProductStatus;
 import com.wiirux.orderService.repositories.ProductRepository;
+import com.wiirux.orderService.services.ProductService;
 
 @ActiveProfiles("local")
 @DataJpaTest
-@ComponentScan(basePackages = {"com.wiirux.orderservice.dao"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ComponentScan(basePackageClasses = ProductService.class)
 public class ProductRepositoryTest {
 	
 	@Autowired
 	ProductRepository pr;
+	
+	@Autowired
+    ProductService ps;
 	
 	@Test
 	void testGetCategory() {
@@ -52,11 +56,11 @@ public class ProductRepositoryTest {
 		Product product = new Product();
 		product.setDescription("My Product");
 		product.setProductStatus(ProductStatus.NEW);
-		Product savedProduct = pr.saveAndFlush(product);
+		Product savedProduct = ps.saveProduct(product);
 		
-		savedProduct.setQuantityOnHand(25);
+		//savedProduct.setQuantityOnHand(25);
 		
-		Product savedProduct2 = pr.saveAndFlush(savedProduct);
+		Product savedProduct2 = ps.updateQOH(savedProduct.getId(), 25);
 		System.out.println(savedProduct2.getQuantityOnHand());
 	}
 }

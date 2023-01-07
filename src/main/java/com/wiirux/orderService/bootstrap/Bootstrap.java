@@ -7,8 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.wiirux.orderService.domain.Customer;
 import com.wiirux.orderService.domain.OrderHeader;
+import com.wiirux.orderService.domain.Product;
+import com.wiirux.orderService.domain.ProductStatus;
 import com.wiirux.orderService.repositories.CustomerRepository;
 import com.wiirux.orderService.repositories.OrderHeaderRepository;
+import com.wiirux.orderService.services.ProductService;
 
 @Component
 public class Bootstrap implements CommandLineRunner {
@@ -21,6 +24,22 @@ public class Bootstrap implements CommandLineRunner {
 	
 	@Autowired
 	CustomerRepository cr;
+	
+	@Autowired
+	ProductService ps;
+	
+	void updateProduct() {
+		Product product = new Product();
+		product.setDescription("My Product");
+		product.setProductStatus(ProductStatus.NEW);
+		Product savedProduct = ps.saveProduct(product);
+		
+		//savedProduct.setQuantityOnHand(25);
+		
+		Product savedProduct2 = ps.updateQOH(savedProduct.getId(), 25);
+		
+		System.out.println("Updated Qty: " + savedProduct2.getQuantityOnHand());
+	}
 	
 	//@Transactional
 	@Override
@@ -38,6 +57,7 @@ public class Bootstrap implements CommandLineRunner {
 			});
 		});
 		*/
+		updateProduct();
 		bos.readOrderData();
 		
 		Customer customer = new Customer();
