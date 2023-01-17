@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.wiirux.orderService.domain.Address;
 import com.wiirux.orderService.domain.Customer;
 import com.wiirux.orderService.domain.OrderApproval;
 import com.wiirux.orderService.domain.OrderHeader;
@@ -138,6 +139,12 @@ public class OrderHeaderTest {
 		OrderHeader oh = new OrderHeader();
 		Customer customer = new Customer();
 		customer.setName("New Customer");
+		customer.setPhone("0123456789");
+		
+		Address address = new Address();
+		address.setCity("0123456789");
+		customer.setCustomerAddress(address);
+		
 		Customer savedCustomer = cr.save(customer);
 		
 		oh.setCustomer(savedCustomer);

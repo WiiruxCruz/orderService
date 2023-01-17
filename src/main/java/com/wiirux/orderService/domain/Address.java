@@ -2,11 +2,14 @@ package com.wiirux.orderService.domain;
 
 import java.util.Objects;
 
+import org.hibernate.validator.constraints.Length;
+
 import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class Address {
 	private String address;
+	@Length(max = 30)
 	private String city;
 	private String state;
 	private String zipCode;

@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.hibernate.validator.constraints.Length;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.CascadeType;
@@ -21,11 +23,13 @@ import jakarta.persistence.Version;
 	)
 })
 public class Customer extends BaseEntity {
+	@Length(max = 50)
 	private String name;
 	
 	@Embedded
 	private Address customerAddress;
 	
+	@Length(max = 20)
 	private String phone;
 	private String email;
 	
