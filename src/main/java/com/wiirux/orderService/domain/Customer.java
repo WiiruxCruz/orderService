@@ -14,6 +14,9 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Version;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @AttributeOverrides({
@@ -23,14 +26,18 @@ import jakarta.persistence.Version;
 	)
 })
 public class Customer extends BaseEntity {
-	@Length(max = 50)
+	@Size(max = 50)
 	private String name;
 	
+	@Valid
 	@Embedded
 	private Address customerAddress;
 	
-	@Length(max = 20)
+	@Size(max = 20)
 	private String phone;
+	
+	@Size(max = 255)
+	@Email
 	private String email;
 	
 	@Version
